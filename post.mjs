@@ -1,6 +1,6 @@
 const WIDTH = 42; //desired width of code boxes in discord
 
-//emoji table, based personalized discord settings.
+//EMOJI TABLE, based on individual discord servers.
 const emoji = {
   //log channel emoji ids. 
   /*
@@ -22,7 +22,7 @@ const emoji = {
 };
 
 //Field Generation: Given an object of arrays and the number of arrays
-//generate a spaced text section for those arrays. 
+//General Format. generate a spaced text section for those arrays, inserting emoji. Used for boons.
 const createSummaryByGroup = (async (objOfArrays, num) => {
   const spacing = '    '; //four, spacing between emoji
   const valueLength = 9; //including spacing
@@ -63,6 +63,7 @@ const createSummaryByGroup = (async (objOfArrays, num) => {
 });
 
 //Field Generation: Create the spacing for a one variable section
+//General format
 const createOrderedString = ((array, variable) =>{
   let result = '';
 
@@ -82,6 +83,7 @@ const createOrderedString = ((array, variable) =>{
 });
 
 //Field Generation: damage and DPS summary. Only section that has two variable. 
+//Not a general format, but could be converted into one.
 const createDPSSummary = ((array) => {
   let result = '';
   //const dmgLength = 7;
@@ -142,7 +144,6 @@ const colorGenerator =((deaths, kills) => {
 
 export const getDiscordParams =(async(details) => {
   if (!details) {
-    console.log("there are no details!");
     throw("There are no details to post to discord.");
   }
 

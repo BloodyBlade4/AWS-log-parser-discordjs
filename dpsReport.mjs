@@ -27,6 +27,7 @@ const createAvg = (async (array, percent) => {
 //get and return info in a usable format from dps.report
 export const getDPSReport = (async(link) => {
   let report;
+  //get the parsed json from dps.report
   try{
     report = await fetchPromise(`https://dps.report/getJson?permalink=${link}`, {});
   }
@@ -35,6 +36,7 @@ export const getDPSReport = (async(link) => {
     throw(error);
   }
 
+  //the output object, passed on to post.mjs, that holds all the desired log details.
   let details = {
     link: link,
     name: report.fightName,
@@ -70,6 +72,7 @@ export const getDPSReport = (async(link) => {
   for await (const player of report.players) {
   	if (player.notInSquad || player.friendlyNPC)
   		break;
+    //Player information
     const name = player.name + ` (${player.profession.substr(0,3)})`; 
     const group = player.group;
     let damage = 0;
@@ -89,10 +92,12 @@ export const getDPSReport = (async(link) => {
     	details.enemyDeaths += stat[0].killed;
     	details.enemyDowns += stat[0].downed;
     }
-
+    //push these details as an object into their respective array. 
     details.cleanses.push({name: name, cleanses: (player.support[0].condiCleanse + player.support[0].condiCleanseSelf)});
     details.strips.push({name: name, strips: player.support[0].boonStrips});
     details.damage.push({name: name, damage: damage, dps: dps});
+
+    //push the boon active uptime into their repective array, in an index corresponding to the player's group. 
     details.stability[group-1].push(await findBoonUptime(player.buffUptimesActive, 1122));
     details.might[group-1].push(await findBoonUptime(player.buffUptimesActive, 740));
     details.alacrity[group-1].push(await findBoonUptime(player.buffUptimesActive, 30328));
@@ -104,7 +109,7 @@ export const getDPSReport = (async(link) => {
     details.aegis[group-1].push(await findBoonUptime(player.buffUptimesActive, 743));
   }
 
-  //sort and cut down to ten results max. Post will handle filtering 0's.:
+  //sort largest to smallest, then cut down to ten results max. Post will handle filtering 0's.:
   details.damage.sort((a,b) => b.damage - a.damage);
   details.damage = details.damage.slice(0,10);
   details.cleanses.sort((a,b) => b.cleanses - a.cleanses);
@@ -112,7 +117,7 @@ export const getDPSReport = (async(link) => {
   details.strips.sort((a,b) => b.strips - a.strips);
   details.strips = details.strips.slice(0,10);
 
-  //average
+  //average: createAvg( listOfIntegers, isPercentage)
   details.stability = await createAvg(details.stability, false); 
   details.might = await createAvg(details.might, false);
   details.alacrity = await createAvg(details.alacrity, true);
