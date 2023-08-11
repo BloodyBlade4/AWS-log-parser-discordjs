@@ -1,0 +1,15 @@
+{
+  "name": "combat-logs",
+  "version": "1.0.0",
+  "description": "lambda function listening for log links. will take the link, run it through dps.report and then post into a thread on DETHS log channel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Smok",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^2.0.0",
+    "node-fetch": "^3.3.2"
+  }
+}
