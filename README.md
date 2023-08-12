@@ -39,12 +39,14 @@ A discord bot with permissions to: view, create, and post to threads is required
 
 #### Lambda File Modification
 - The files should be modifiable inside of Lambda. However, if there is an issue where you can't, then you can modify the code in any text editor or IDE, rezip the files, and upload to Lambda again.
-- The emoji id used for boon averages is unique to each discord. Simply paste in your server's emoji id into the corresponding string in the "emoji" table, found at the top of post.mjs. Be sure to keep the apostrophy around the id. 
+- The emoji id used for boon averages is unique to each discord. Simply paste in your server's emoji id into the corresponding string in the "emoji" table, found at the top of post.mjs. Be sure to keep the quotation marks around the id. 
 	- If you do not enter in your servers’ emoji id, then the string inside the “emoji” object will be displayed (e.g. <:Stability:1128826486841950218>).  Creating server emojis is fairly easy, guides can be found through google. Once you have your emoji, you can find the id by typing a backslash “\” before inserting an emoji in chat. 
 - There are a few default layouts that should make it easy to change the data shown, look in the "Cusomization" section below for further info. 
 
 #### Lambda Testing
-- The lambda function should be able to successfully upload to the server when run with the test statement given in the lambdaTest.json file. The fields “permalink” and “password” must be set in the testing json to match your environmental variables, same as you would in PlenBot. Alternatively, you can assign the "link" variable in the index.mjs file with a working dps.report link, commenting out the incoming request checks for testing.
+- The lambda function should be able to successfully upload to the server when run with the test statement given in the lambdaTest.json file. The fields “permalink” and “password” must be set in the testing json to match your environmental variables, same as you would in PlenBot. 
+- Alternatively, you can assign the "link" variable in the index.mjs file with a working dps.report link, commenting out the incoming request checks for testing. Hit the "Deploy" button so that the changes take effect.
+![Lambda testing](/details/setUpLambdaTesting.png)
 
 ### API Gateway
 - Finally, set up a REST, AWS API Gateway. At the time of writing, the option screen should be: 
@@ -65,8 +67,10 @@ A discord bot with permissions to: view, create, and post to threads is required
 Customizing the logs can require some knowledge of the json format of the logs. Elite Insight's JSON documents can be found [HERE](https://baaron4.github.io/GW2-Elite-Insights-Parser/Json/index.html). However, it can be easier to just look through a parsed json log --you can have one generated via [Elite Insights](https://github.com/baaron4/GW2-Elite-Insights-Parser/tree/master). 
 
 There are only two places you need to modify to change or add information to your log posts. 
-- dpsReport.mjs finds and stores the information that you're wanting to parse.  
-- post.mjs formats the information into code blocks that suit Discord's posting style. 
+- dpsReport.mjs finds and stores the information that you're wanting to parse. To parse different information, you must retrieve the information from the json and store it in the "details" object, use the currently stored variables as reference.
+- post.mjs formats the information into code blocks that suit Discord's posting style. There are multiple functions that have a default layout that can be applied to different uses. 
+	- CreateSummaryByGroup: Used to link emoji's to a boon array object given.
+	- create OrderedString: Creates a "Top 10" ranking given an array of objects ({name: playerName, statName: amount}).
 
 
 
