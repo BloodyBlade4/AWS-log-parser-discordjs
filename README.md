@@ -71,6 +71,7 @@ There are only two places you need to modify to change or add information to you
 - post.mjs formats the information into code blocks that suit Discord's posting style. There are multiple functions that have a default layout that can be applied to different uses. 
 	- CreateSummaryByGroup: Used to link emoji's to a boon array object given.
 	- create OrderedString: Creates a "Top 10" ranking given an array of objects ({name: playerName, statName: amount}).
+	- be sure to add/remove/modify the "params" object accordily, this is the text sent to discord.
 
 
 
